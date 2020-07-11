@@ -5,11 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
   fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
       console.log(emails)
-      document.querySelector('#emails-view').innerHTML= email_list(emails)
     // ... do something else with emails ...
+    var messages = emails.map(label).join(' ')
+    document.querySelector('#emails-view').innerHTML = messages
+    
+    
+    function label(email) {
+      return `<li>${email.sender} ${email.subject} ${email.timestamp}</li>`
+    }
+
+    
 });
 
-})
+}   )
 
 function email_list(emails) {
       for (let index = 0; index < emails.length; index++) {
@@ -63,5 +71,11 @@ function load_mailbox(mailbox) {
   document.querySelector('#compose-view').style.display = 'none';
 
   // Show the mailbox name
-  // document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
-}
+  document.querySelector('#mailbox-heading').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+  //Show email list
+  
+
+  }
+
+
