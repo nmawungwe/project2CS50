@@ -1,23 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
-  document.querySelector('#inbox').addEventListener('click', ()=>{
-  fetch('/emails/inbox').then(response => response.json()).then(emails => {
+  document.querySelector('#inbox').addEventListener('click', ()=>{ load_mailbox(
+    fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
       console.log(emails)
     // ... do something else with emails ...
     var messages = emails.map(label).join(' ')
     document.querySelector('#emails-view').innerHTML = messages
     
-    
     function label(email) {
       return `<li>${email.sender} ${email.subject} ${email.timestamp}</li>`
     }
 
     
-});
-
-}   )
+}))
+})
 
 function email_list(emails) {
       for (let index = 0; index < emails.length; index++) {
