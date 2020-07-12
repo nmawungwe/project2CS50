@@ -10,19 +10,32 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-      return `<button data-email="${email.id}" >${email.sender} ${email.subject} ${email.timestamp}</button><br>`
-    }   
+      return `<button data-email="${email.id}" class="btn btn-sm btn-outline-primary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
+    }
+    
+    document.querySelectorAll('button').forEach(button=>{
+      load_email(
+       button.onclick = function() {
+
+        //  console.log('clicking')
+        load_email(
+          showEmail(this.dataset.email)
+        )
+         
+       } 
+      )
+   
+     })
+    
       
 }))
 })
 
 
+ 
 
-document.querySelectorAll('button').forEach(button=>{
-    button.onclick = function() {
-      showEmail(this.dataset.email);
-    } 
-  })
+
+
 
 
   
@@ -126,7 +139,7 @@ function load_mailbox(mailbox) {
 
   }
 
-  function load_email(email_id) {
+  function load_email(email) {
   
     // Show the mailbox and hide other views
     document.querySelector('#emails-view').style.display = 'block';
@@ -140,12 +153,13 @@ function load_mailbox(mailbox) {
   
     }
 
-  function showEmail(email_id) {
+  function showEmail(email) {
 
       document.querySelector('#emails-view').style.display = 'block';
       document.querySelector('#compose-view').style.display = 'none';
+      
 
-      fetch('/emails/1').then(response => response.json()).then(email => {
+      fetch(`/emails/${email}`).then(response => response.json()).then(email => {
         // Print email
         console.log(email)
     
