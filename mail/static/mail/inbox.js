@@ -4,23 +4,32 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#inbox').addEventListener('click', ()=>{ load_mailbox(
     fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
-      console.log(emails)
+      // console.log(emails)
     // ... do something else with emails ...
     var messages = emails.map(label).join(' ')
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-      return `<a href="" id="email">${email.sender} ${email.subject} ${email.timestamp}</a><br>`
+      return `<button data-email="${email.id}" >${email.sender} ${email.subject} ${email.timestamp}</button><br>`
     }   
       
 }))
 })
 
+
+
+document.querySelectorAll('button').forEach(button=>{
+    button.onclick = function() {
+      showEmail(this.dataset.email);
+    } 
+  })
+
+
   
 document.querySelector('#sent').addEventListener('click', () => load_mailbox(
   fetch('/emails/sent').then(response => response.json()).then(emails => {
     // Print emails
-    console.log(emails)
+    // console.log(emails)
 
     var messages = emails.map(label).join(' ')
     document.querySelector('#emails-view').innerHTML = messages
@@ -31,6 +40,23 @@ document.querySelector('#sent').addEventListener('click', () => load_mailbox(
       return `<li>${email.recipients} ${email.subject} ${email.timestamp}</li>`
   }}
 )))
+
+
+// document.querySelector('#email').addEventListener('click', () => load_email(
+//   fetch('/emails/1')
+//   .then(response => response.json())
+//   .then(email => {
+//       // Print email
+//       console.log(email);
+  
+//       // ... do something else with email ...
+//   })))
+
+
+
+
+
+
 
 document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
 
@@ -52,7 +78,7 @@ document.querySelector('form').onsubmit = function() {
     .then(response => response.json())
     .then(result => {
         // Print result
-        console.log(result);
+        // console.log(result);
         load_mailbox('inbox')
     });
 
@@ -60,10 +86,9 @@ document.querySelector('form').onsubmit = function() {
   }
 
   // By default, load the inbox
-  load_mailbox(
-    fetch('/emails/inbox').then(response => response.json()).then(emails => {
+  load_mailbox(fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
-      console.log(emails)
+      // console.log(emails)
     // ... do something else with emails ...
     var messages = emails.map(label).join(' ')
     document.querySelector('#emails-view').innerHTML = messages
@@ -73,7 +98,7 @@ document.querySelector('form').onsubmit = function() {
     }   
 }));
 
-});
+
 
 function compose_email() {
 
@@ -101,4 +126,29 @@ function load_mailbox(mailbox) {
 
   }
 
+  function load_email(email_id) {
+  
+    // Show the mailbox and hide other views
+    document.querySelector('#emails-view').style.display = 'block';
+    document.querySelector('#compose-view').style.display = 'none';
+  
+    // Show the mailbox name
+    // document.querySelector('#mailbox-heading').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  
+    //Show email list
+    
+  
+    }
 
+  function showEmail(email_id) {
+
+      document.querySelector('#emails-view').style.display = 'block';
+      document.querySelector('#compose-view').style.display = 'none';
+
+      fetch('/emails/1').then(response => response.json()).then(email => {
+        // Print email
+        console.log(email)
+    
+        // ... do something else with email ...
+    })
+  }})
