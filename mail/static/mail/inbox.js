@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-      return `<button data-email="${email.id}" class="btn btn-sm btn-outline-primary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
+      return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
     }
     
     document.querySelectorAll('button').forEach(button=>{
@@ -52,9 +52,20 @@ document.querySelector('#sent').addEventListener('click', () => load_mailbox(
     function label(email) {
       // const email_id = email.id
       // console.log(email_id)
-      return `<li>${email.recipients} ${email.subject} ${email.timestamp}</li>`
-  }}
-)))
+      return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
+  }
+  document.querySelectorAll('button').forEach(button=>{
+    load_email(
+     button.onclick = function() {
+
+      //  console.log('clicking')
+
+        showEmail(this.dataset.email)
+  
+     })
+   })
+})
+))
 
 
 // document.querySelector('#email').addEventListener('click', () => load_email(
@@ -101,7 +112,8 @@ document.querySelector('form').onsubmit = function() {
   }
 
   // By default, load the inbox
-  load_mailbox(fetch('/emails/inbox').then(response => response.json()).then(emails => {
+  load_mailbox(fetch('/emails/inbox').then(response => response.json()).then(
+    emails => {
       // Print emails
       // console.log(emails)
     // ... do something else with emails ...
@@ -109,8 +121,26 @@ document.querySelector('form').onsubmit = function() {
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-      return `<li>${email.sender} ${email.subject} ${email.timestamp}</li>`
-    }   
+      return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
+    }
+    
+    document.querySelectorAll('button').forEach(button=>{
+      load_email(
+       button.onclick = function() {
+
+        //  console.log('clicking')
+
+          showEmail(this.dataset.email)
+
+          
+
+         
+       } 
+      )
+   
+     })
+    
+      
 }));
 
 
@@ -165,8 +195,16 @@ function load_mailbox(mailbox) {
         // Print email
         console.log(email)
         console.log(email.sender)
+        
+        // let time = email.timestamp.toDateString()
 
-        document.querySelector('#emails-view').innerHTML = `<b>Sender:</b> ${email.sender}<br><b>Body:</b>${email.body}`
+
+        document.querySelector('#emails-view').innerHTML = `<b>From:</b> ${email.sender}<br><b>To: </b>${email.recipients}<br>
+        <b>Subject: </b>${email.subject}<br>
+        <b>Timestamp: </b>${email.timestamp}<br>
+        <button class="btn btn-sm btn-outline-primary">Reply</button>
+        <hr>
+        ${email.body}`
     
         // ... do something else with email ...
     })
