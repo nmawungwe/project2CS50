@@ -18,9 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
        button.onclick = function() {
 
         //  console.log('clicking')
-        load_email(
+
           showEmail(this.dataset.email)
-        )
+
+          
+
          
        } 
       )
@@ -162,6 +164,9 @@ function load_mailbox(mailbox) {
       fetch(`/emails/${email}`).then(response => response.json()).then(email => {
         // Print email
         console.log(email)
+        console.log(email.sender)
+
+        document.querySelector('#emails-view').innerHTML = `Sender: ${email.sender}`
     
         // ... do something else with email ...
     })
