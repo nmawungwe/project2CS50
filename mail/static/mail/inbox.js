@@ -166,7 +166,7 @@ function load_mailbox(mailbox) {
         console.log(email)
         console.log(email.sender)
 
-        document.querySelector('#emails-view').innerHTML = `Sender: ${email.sender}`
+        document.querySelector('#emails-view').innerHTML = `<b>Sender:</b> ${email.sender}<br><b>Body:</b>${email.body}`
     
         // ... do something else with email ...
     })
