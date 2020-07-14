@@ -10,23 +10,20 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-
-    // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
-
-    // https://stackoverflow.com/questions/48384163/javascript-remove-day-name-from-date
-      let time = new Date(email.timestamp)
-      console.log(time.toDateString())
-      
-      let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-
-      return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>   ${email.subject}</div><div class="column_2">${date}</button>`
+      return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
     }
     
     document.querySelectorAll('button').forEach(button=>{
       load_email(
        button.onclick = function() {
+
         //  console.log('clicking')
-          showEmail(this.dataset.email) 
+
+          showEmail(this.dataset.email)
+
+          
+
+         
        } 
       )
    
@@ -35,6 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
       
 }))
 })
+
+
+ 
+
+
+
 
 
   
@@ -49,17 +52,17 @@ document.querySelector('#sent').addEventListener('click', () => load_mailbox(
     function label(email) {
       // const email_id = email.id
       // console.log(email_id)
-
       return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
   }
   document.querySelectorAll('button').forEach(button=>{
+    load_email(
      button.onclick = function() {
 
       //  console.log('clicking')
 
         showEmail(this.dataset.email)
   
-     }
+     })
    })
 })
 ))
@@ -118,24 +121,22 @@ document.querySelector('form').onsubmit = function() {
     document.querySelector('#emails-view').innerHTML = messages
     
     function label(email) {
-
-      // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
-  
-      // https://stackoverflow.com/questions/48384163/javascript-remove-day-name-from-date
-        let time = new Date(email.timestamp)
-        console.log(time.toDateString())
-        
-        let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
-  
-        return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>   ${email.subject}</div><div class="column_2">${date}</button>`
-      }
+      return `<button data-email="${email.id}" class="btn btn-secondary email">${email.sender} ${email.subject} ${email.timestamp}</button><br>`
+    }
     
     document.querySelectorAll('button').forEach(button=>{
+      load_email(
        button.onclick = function() {
-        //  console.log('clicking')
-          showEmail(this.dataset.email)         
-       } 
 
+        //  console.log('clicking')
+
+          showEmail(this.dataset.email)
+
+          
+
+         
+       } 
+      )
    
      })
     
@@ -143,12 +144,13 @@ document.querySelector('form').onsubmit = function() {
 }));
 
 
+
 function compose_email() {
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
-  
+  document.querySelector('#email-ind').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -161,7 +163,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
-  
+  document.querySelector('#email-ind').style.display = 'none';
 
   // Show the mailbox name
   // document.querySelector('#mailbox-heading').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -171,12 +173,26 @@ function load_mailbox(mailbox) {
 
   }
 
+  function load_email(email) {
+  
+    // Show the mailbox and hide other views
+    document.querySelector('#emails-view').style.display = 'block';
+    document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#email-ind').style.display = 'none';
+  
+    // Show the mailbox name
+    // document.querySelector('#mailbox-heading').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+  
+    //Show email list
+    
+  
+    }
 
   function showEmail(email) {
 
       document.querySelector('#emails-view').style.display = 'block';
       document.querySelector('#compose-view').style.display = 'none';
- 
+      document.querySelector('#email-ind').style.display = 'none';
       
 
       fetch(`/emails/${email}`).then(response => response.json()).then(email => {
@@ -187,7 +203,7 @@ function load_mailbox(mailbox) {
         
         
         let time = new Date(email.timestamp)
-        let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+        let date =  time.toDateString() + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
         // date = time.toTimeString()
 

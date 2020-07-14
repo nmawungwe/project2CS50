@@ -4,19 +4,6 @@ textarea {
 
 .email{
     width: 100%;
-    border-color:black;
-}
-
-.wrapper{
-  width: 100%;  
-}
-
-.column_1{
-    float: left;
     text-align: left;
-}
-
-.column_2{
-    float: right;
-    text-align: right;
+    border-color:black;
 }
