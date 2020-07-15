@@ -40,7 +40,7 @@ document.querySelectorAll('.email').forEach(button=>{
     fetch('/emails/sent').then(response => response.json()).then(emails => {
       // Print emails
       // console.log(emails)
-  
+      // https://www.encodedna.com/javascript/how-to-remove-commas-from-array-in-javascript.htm 
       var messages = emails.map(label).join(' ')
       document.querySelector('#emails-view').innerHTML = messages
       
@@ -52,7 +52,7 @@ function label(email) {
 
   let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
-
+  // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
   return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>  ${email.subject}</div><div class="column_2">${date}</div></button>`
 }
 
