@@ -3,12 +3,14 @@ document.addEventListener('DOMContentLoaded', function() {
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox(
     
+    // document.querySelector('#mailbox-title').innerHTML = `<h3>Inbox</h3>`,
     fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
       // console.log(emails)
     // ... do something else with emails ...
     var messages = emails.map(label).join(' ')
-    document.querySelector('#emails-view').innerHTML = messages
+    document.querySelector('#mail-list-view').innerHTML = messages
+    document.querySelector('#mail-list-heading').innerHTML = `<h3>Inbox</h3>`
     
 
 
@@ -70,7 +72,8 @@ document.querySelectorAll('.email').forEach(button=>{
       // console.log(emails)
       // https://www.encodedna.com/javascript/how-to-remove-commas-from-array-in-javascript.htm 
       var messages = emails.map(label).join(' ')
-      document.querySelector('#emails-view').innerHTML = messages
+      document.querySelector('#mail-list-view').innerHTML = messages
+      document.querySelector('#mail-list-heading').innerHTML = `<h3>Sent</h3>`
       
       
 function label(email) {
@@ -105,7 +108,7 @@ document.querySelectorAll('.email').forEach(button=>{
       // date = time.toTimeString()
       // console.log(date)
     
-      document.querySelector('#mailbox-heading').innerHTML = `<h3>Inbox</h3>`
+      
       document.querySelector('#sender').innerHTML = `<b>From:</b>${email.sender}`
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
@@ -154,9 +157,8 @@ fetch('/emails/inbox').then(response => response.json()).then(emails => {
   // console.log(emails)
 // ... do something else with emails ...
 var messages = emails.map(label).join(' ')
-document.querySelector('#emails-view').innerHTML = messages
-
-
+document.querySelector('#mail-list-view').innerHTML = messages
+document.querySelector('#mail-list-heading').innerHTML = `<h3>Inbox</h3>`
     
 function label(email) {
 // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
