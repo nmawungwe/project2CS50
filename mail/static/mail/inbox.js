@@ -34,7 +34,7 @@ document.querySelectorAll('.email').forEach(button=>{
       email = this.dataset.email
       fetch(`/emails/${email}`).then(response => response.json()).then(email => {
         // Print email
-        console.log(email)
+        // console.log(email)
         // console.log(email.sender)
       
         let time = new Date(email.timestamp)
@@ -88,7 +88,7 @@ document.querySelectorAll('.email').forEach(button=>{
     email = this.dataset.email
     fetch(`/emails/${email}`).then(response => response.json()).then(email => {
       // Print email
-      console.log(email)
+      // console.log(email)
       // console.log(email.sender)
     
       let time = new Date(email.timestamp)
@@ -103,6 +103,7 @@ document.querySelectorAll('.email').forEach(button=>{
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+      document.querySelector('#reply').innerHTML =``
       document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`
     })
@@ -180,9 +181,14 @@ document.querySelector('#unarchive').addEventListener('click',()=> unarchive(
     }
   ));
 
-  document.querySelector('#reply').addEventListener('click',() => reply(
-    console.log('todii Reply')
-  ));
+  
+  document.querySelector('#reply').addEventListener('click',()=> reply_email(
+    function () {
+      email =dataset.email
+    }
+  ))
+
+
   document.querySelector('#compose').addEventListener('click', compose_email);
   document.querySelector('form').onsubmit = function() {
     const recipients = document.querySelector('#compose-recipients').value;
@@ -251,6 +257,7 @@ document.querySelectorAll('.email').forEach(button=>{
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+      document.querySelector('#reply').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Reply</button>`
       document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`   
     })
@@ -270,6 +277,29 @@ function compose_email() {
   document.querySelector('#compose-subject').value = '';
   document.querySelector('#compose-body').value = '';
 }
+
+function reply_email() {
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#email-ind').style.display = 'none';
+  document.querySelector('#archive-view').style.display = 'none';
+  console.log(email)
+
+  fetch(`/emails/${email}`).then(response => response.json()).then(email => {
+    // Print email
+    // console.log(email)
+    // console.log(email.sender)
+    let time = new Date(email.timestamp)
+    let date =  time.toDateString() + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
+
+  
+    // Clear out composition fields
+  document.querySelector('#compose-recipients').value = `${email.sender}`;
+  document.querySelector('#compose-subject').value = `Re: ${email.subject} `;
+  "On Jan 1 2020, 12:00 AM foo@example.com wrote:"
+  document.querySelector('#compose-body').value = `On ${date} ${email.sender} wrote: ${email.body}`;
+  })}
 
 function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
