@@ -47,6 +47,7 @@ document.querySelectorAll('.email').forEach(button=>{
         document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
         document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
         document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+        document.querySelector('#reply').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Reply</button>`
         document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>` 
         document.querySelector('#unarchive').innerHTML =`` 
         document.querySelector('#body').innerHTML =`${email.body}` 
@@ -154,6 +155,7 @@ document.querySelectorAll('.email').forEach(button=>{
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+      document.querySelector('#archive').innerHTML =``
       document.querySelector('#unarchive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Unarchive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`
     })
