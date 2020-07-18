@@ -48,6 +48,7 @@ document.querySelectorAll('.email').forEach(button=>{
         document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
         document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
         document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>` 
+        document.querySelector('#unarchive').innerHTML =`` 
         document.querySelector('#body').innerHTML =`${email.body}` 
       })
 
@@ -95,11 +96,13 @@ document.querySelectorAll('.email').forEach(button=>{
       // date = time.toTimeString()
       // console.log(date)
     
+
       // document.querySelector('#mailbox-heading').innerHTML = `<h3>Inbox</h3>`
       document.querySelector('#sender').innerHTML = `<b>From:</b>${email.sender}`
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+      document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`
     })
 }
@@ -110,7 +113,7 @@ document.querySelectorAll('.email').forEach(button=>{
 
     fetch('/emails/archive').then(response => response.json()).then(emails => {
       // Print emails
-      console.log(emails)
+      // console.log(emails)
       // https://www.encodedna.com/javascript/how-to-remove-commas-from-array-in-javascript.htm 
       var messages = emails.map(label).join(' ')
       document.querySelector('#mailbox-listing').innerHTML = messages
@@ -137,7 +140,7 @@ document.querySelectorAll('.email').forEach(button=>{
     email = this.dataset.email
     fetch(`/emails/${email}`).then(response => response.json()).then(email => {
       // Print email
-      console.log(email)
+      // console.log(email)
       // console.log(email.sender)
     
       let time = new Date(email.timestamp)
@@ -151,6 +154,7 @@ document.querySelectorAll('.email').forEach(button=>{
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+      document.querySelector('#unarchive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Unarchive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`
     })
 }
@@ -160,6 +164,12 @@ document.querySelectorAll('.email').forEach(button=>{
 
 // -----------------
 ));
+document.querySelector('#unarchive').addEventListener('click',()=> unarchive(
+  function () {
+    email =dataset.email
+
+  }
+));
 
   document.querySelector('#archive').addEventListener('click',()=> archive(
     function () {
@@ -167,6 +177,7 @@ document.querySelectorAll('.email').forEach(button=>{
 
     }
   ));
+
   document.querySelector('#reply').addEventListener('click',() => reply(
     console.log('todii Reply')
   ));
@@ -279,12 +290,12 @@ function load_email(email) {
 
 
   function archive() {
-    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#emails-view').style.display = 'block';
     document.querySelector('#compose-view').style.display = 'none';
-    document.querySelector('#email-ind').style.display = 'block';
+    document.querySelector('#email-ind').style.display = 'none';
     document.querySelector('#archive-view').style.display = 'none';
 
-    console.log(email)
+    // console.log(email)
     fetch(`/emails/${email}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -292,6 +303,21 @@ function load_email(email) {
       })
     })
   }
+
+  function unarchive() {
+    document.querySelector('#emails-view').style.display = 'none';
+    document.querySelector('#compose-view').style.display = 'none';
+    document.querySelector('#email-ind').style.display = 'none';
+    document.querySelector('#archive-view').style.display = 'block';
+
+    // console.log(email)
+    fetch(`/emails/${email}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+          archived: false
+      })
+    })
+  } 
 
 
   function reply() {
