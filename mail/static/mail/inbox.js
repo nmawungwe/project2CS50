@@ -2,19 +2,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Use buttons to toggle between views
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox(
+
     
-    // document.querySelector('#mailbox-title').innerHTML = `<h3>Inbox</h3>`,
     fetch('/emails/inbox').then(response => response.json()).then(emails => {
       // Print emails
       // console.log(emails)
     // ... do something else with emails ...
     var messages = emails.map(label).join(' ')
-    document.querySelector('#mail-list-view').innerHTML = messages
-    document.querySelector('#mail-list-heading').innerHTML = `<h3>Inbox</h3>`
+    document.querySelector('#mailbox-listing').innerHTML = messages
+    document.querySelector('#mailbox-heading').innerHTML = `<h3>Inbox</h3>`
     
 
-
-    
 function label(email) {
 // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
 // https://stackoverflow.com/questions/48384163/javascript-remove-day-name-from-date
@@ -47,13 +45,13 @@ document.querySelectorAll('.email').forEach(button=>{
         // date = time.toTimeString()
         // console.log(date)
       
-        document.querySelector('#email-ind').innerHTML = `<b>From:</b> ${email.sender}<br><b>To: </b>${email.recipients}<br>
-        <b>Subject: </b>${email.subject}<br>
-        <b>Timestamp: </b>${date}<br>
-        <button class="btn btn-sm btn-outline-primary">Reply</button>
-        <button class="btn btn-sm btn-outline-primary archive">Archive</button>
-        <hr>
-        ${email.body}`
+        document.querySelector('#sender').innerHTML = `<b>From:</b>${email.sender}`
+        document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
+        document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
+        document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
+        document.querySelector('#body').innerHTML =`${email.body}`
+
+
         
         
       })
@@ -72,8 +70,8 @@ document.querySelectorAll('.email').forEach(button=>{
       // console.log(emails)
       // https://www.encodedna.com/javascript/how-to-remove-commas-from-array-in-javascript.htm 
       var messages = emails.map(label).join(' ')
-      document.querySelector('#mail-list-view').innerHTML = messages
-      document.querySelector('#mail-list-heading').innerHTML = `<h3>Sent</h3>`
+      document.querySelector('#mailbox-listing').innerHTML = messages
+      document.querySelector('#mailbox-heading').innerHTML = `<h3>Sent</h3>`
       
       
 function label(email) {
@@ -108,7 +106,7 @@ document.querySelectorAll('.email').forEach(button=>{
       // date = time.toTimeString()
       // console.log(date)
     
-      
+      // document.querySelector('#mailbox-heading').innerHTML = `<h3>Inbox</h3>`
       document.querySelector('#sender').innerHTML = `<b>From:</b>${email.sender}`
       document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
@@ -119,7 +117,7 @@ document.querySelectorAll('.email').forEach(button=>{
 })
 })))
 
-  document.querySelector('#archived').addEventListener('click', () => archived());
+  document.querySelector('#archived').addEventListener('click', () => archived_view());
   document.querySelector('#archive').addEventListener('click',()=> archive(
     console.log('todii Archive')
   ));
@@ -157,8 +155,10 @@ fetch('/emails/inbox').then(response => response.json()).then(emails => {
   // console.log(emails)
 // ... do something else with emails ...
 var messages = emails.map(label).join(' ')
-document.querySelector('#mail-list-view').innerHTML = messages
-document.querySelector('#mail-list-heading').innerHTML = `<h3>Inbox</h3>`
+document.querySelector('#mailbox-listing').innerHTML = messages
+document.querySelector('#mailbox-heading').innerHTML = `<h3>Inbox</h3>`
+
+
     
 function label(email) {
 // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
@@ -271,7 +271,7 @@ function load_email(email) {
 
   }
 
-  function archived() {
+  function archived_view() {
     //moving to archive view
     document.querySelector('#emails-view').style.display = 'none';
     document.querySelector('#compose-view').style.display = 'none';
