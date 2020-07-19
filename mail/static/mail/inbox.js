@@ -16,11 +16,19 @@ function label(email) {
 // https://stackoverflow.com/questions/48384163/javascript-remove-day-name-from-date
 let time = new Date(email.timestamp)
 // console.log(time.toDateString())
-
+// console.log(email.read)
 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
 
-  return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+if (email.read===true) {
+  // console.log('email read')
+  return `<button data-email="${email.id}" class="btn read email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+
+} else {
+  // console.log('Nadaa')
+  return `<button data-email="${email.id}" class="btn unread email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+}
+
 }
 
 
@@ -32,6 +40,13 @@ document.querySelectorAll('.email').forEach(button=>{
  
       load_email()
       email = this.dataset.email
+      fetch(`/emails/${email}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            read: true
+        })
+      })
+
       fetch(`/emails/${email}`).then(response => response.json()).then(email => {
         // Print email
         // console.log(email)
@@ -47,8 +62,8 @@ document.querySelectorAll('.email').forEach(button=>{
         document.querySelector('#recipients').innerHTML = `<b>To:</b> ${email.recipients}`
         document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
         document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
-        document.querySelector('#reply').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Reply</button>`
-        document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>` 
+        document.querySelector('#reply').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary reply">Reply</button>`
+        document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary archive">Archive</button>` 
         document.querySelector('#unarchive').innerHTML =`` 
         document.querySelector('#body').innerHTML =`${email.body}` 
       })
@@ -77,7 +92,7 @@ function label(email) {
   let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
   // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-  return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>  ${email.subject}</div><div class="column_2">${date}</div></button>`
+  return `<button data-email="${email.id}" class="btn read email wrapper"><div class ="column_1"><b>${email.sender}</b>  ${email.subject}</div><div class="column_2">${date}</div></button>`
 }
 
 
@@ -131,7 +146,7 @@ function label(email) {
   let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
   // https://stackoverflow.com/questions/2914443/how-to-hold-three-different-text-alignments-in-one-css-box
-  return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>  ${email.subject}</div><div class="column_2">${date}</div></button>`
+  return `<button data-email="${email.id}" class="btn read email wrapper"><div class ="column_1"><b>${email.sender}</b>  ${email.subject}</div><div class="column_2">${date}</div></button>`
 }    
 
 
@@ -234,7 +249,16 @@ let time = new Date(email.timestamp)
 let date =  time.toDateString().split(' ').slice(1).join(' ') + ", " + time.toLocaleTimeString().replace(/([\d]+:[\d]{2})(:[\d]{2})(.*)/, "$1$3")
 
 
-  return `<button data-email="${email.id}" class="btn btn-secondary email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+if (email.read===true) {
+  // console.log('email read')
+  return `<button data-email="${email.id}" class="btn read email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+
+} else {
+  // console.log('Nadaa')
+  return `<button data-email="${email.id}" class="btn unread email wrapper"><div class ="column_1"><b>${email.sender}</b>     ${email.subject}</div><div class="column_2">${date}</button>`
+}
+
+
 }
 
 document.querySelectorAll('.email').forEach(button=>{
@@ -258,7 +282,7 @@ document.querySelectorAll('.email').forEach(button=>{
       document.querySelector('#subject').innerHTML = `<b>Subject: </b>${email.subject}`
       document.querySelector('#timestamp').innerHTML =`<b>Timestamp: </b>${date}`
       document.querySelector('#reply').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Reply</button>`
-      document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary">Archive</button>`
+      document.querySelector('#archive').innerHTML =`<button data-email="${email.id}" class="btn btn-sm btn-outline-primary archive">Archive</button>`
       document.querySelector('#body').innerHTML =`${email.body}`   
     })
 }})

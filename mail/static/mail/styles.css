@@ -21,3 +21,26 @@ textarea {
     float: right;
     text-align: right;
 }
+
+.read{
+    background-color:white;
+    border-color: black;
+}
+
+.unread{
+    background-color:gray;
+    border-color: black;
+}
+
+.archive{
+    float: right;
+    margin-left:5px;
+}
+
+.reply{
+    float: right;
+}
+
+.inline{
+    display:flex;
+}
